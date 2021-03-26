@@ -15,7 +15,7 @@
                          jonase/eastwood {:mvn/version "0.3.14"}}}
            :test
            {:extra-deps
-            {org.clojure/clojure {:mvn/version "1.9.0"}
+            {org.clojure/clojure {:mvn/version "1.10.3"}
              org.clojure/clojurescript {:mvn/version "1.10.773"} ;; for extraction
              cognitect/test-runner
              {:git/url "https://github.com/cognitect-labs/test-runner"

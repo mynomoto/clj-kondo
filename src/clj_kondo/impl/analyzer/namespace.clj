@@ -93,6 +93,8 @@
 
 (defn analyze-libspec
   [ctx current-ns-name require-kw-expr libspec-expr]
+  (tap> 
+  [:analyze-libspec ctx current-ns-name require-kw-expr libspec-expr])
   (utils/handle-ignore ctx libspec-expr)
   (let [lang (:lang ctx)
         base-lang (:base-lang ctx)

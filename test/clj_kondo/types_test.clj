@@ -4,7 +4,22 @@
    [clojure.java.io :as io]
    [clojure.test :as t :refer [deftest is testing]]))
 
+(deftest ttt
+   (assert-submaps
+      '({:file "<stdin>",
+         :row 1,
+         :col 34,
+         :level :error,
+         :message "Missing required key: :b"})
+      (lint! "(ns foo) (defn foo [x] (inc (:a x)))"
+         {:linters
+          {:type-mismatch
+           {:level :error
+            :namespaces '{foo {foo {:arities {1 {:args [{:op :keys
+                                                         :req {:a :string}}]
+                                                 :ret :int}}}}}}}})))
 (deftest type-mismatch-test
+  
   (assert-submaps
    '({:row 1,
       :col 6,

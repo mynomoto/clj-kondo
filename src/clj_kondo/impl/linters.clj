@@ -213,7 +213,7 @@
     (doseq [ns (namespace/list-namespaces ctx)
             :let [base-lang (:base-lang ns)]
             call (:used-vars ns)
-            :let [;; _ (clojure.pprint/pprint (dissoc call :config))
+            :let [ _ (tap> (dissoc call :config))
                   call? (= :call (:type call))
                   unresolved? (:unresolved? call)
                   unresolved-ns (:unresolved-ns call)]

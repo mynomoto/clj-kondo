@@ -436,6 +436,7 @@
 
 (defn index-defs-and-calls [ctx]
   (let [indexed-defs (namespaces->indexed-defs ctx)]
+    (tap> [:indexed-defs indexed-defs])
     (assoc indexed-defs :used-namespaces @(:used-namespaces ctx))))
 
 ;;;; summary

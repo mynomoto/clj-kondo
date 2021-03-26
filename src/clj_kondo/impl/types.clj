@@ -106,8 +106,7 @@
 (defn label [k]
   (cond
     (map? k) (recur (:type k))
-    (nilable? k)
-    (str (get labels (unnil k)) " or nil")
+    (nilable? k) (str (get labels (unnil k)) " or nil")
     :else (get labels k)))
 
 (defn match? [k target]
@@ -289,6 +288,7 @@
     l))
 
 (defn emit-non-match! [ctx s arg t]
+  (tap> {:XXXXXX [ctx s arg t]})
   (let [expected-label (tag->label s)
         offending-tag-label (tag->label t)]
     (findings/reg-finding! ctx
@@ -330,6 +330,7 @@
 (declare lint-map!)
 
 (defn lint-map-types! [ctx arg mval spec spec-key required?]
+  (tap> {:XXXXXX [ctx arg mval spec spec-key required?]})
   (doseq [[k target] (get spec spec-key)]
     (if-let [v (get mval k)]
       (when-let [t (type-utils/resolve-arg-type ctx v)]
@@ -341,6 +342,7 @@
         (emit-missing-required-key! ctx arg k)))))
 
 (defn lint-map! [ctx s a t]
+  (tap> {:XXXXXX [ctx s a t]})
   (cond (keyword? t)
         (when-not (match? t :map)
           (emit-non-match! ctx :map a t))
@@ -352,6 +354,7 @@
 (defn lint-arg-types
   [ctx {called-ns :ns called-name :name arities :arities :as _called-fn}
    args tags call]
+  (tap> [:lint-arg-types _called-fn args tags call])
   (let [config (:config ctx)
         called-ns (or called-ns (:resolved-ns call))
         called-name (or called-name (:name call))
@@ -413,4 +416,12 @@
   (match? :map :associative)
   (match? :map :nilable/associative)
   (label :nilable/set)
-  )
+  (defonce taps (atom []))
+  (deref taps)
+  (reset! taps [])
+
+  (defn atom-taper
+    [v]
+    (swap! taps conj v))
+  (add-tap atom-taper)
+  [])
